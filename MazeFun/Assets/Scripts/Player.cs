@@ -2,12 +2,11 @@
 
 public class Player : MonoBehaviour {
 
-	private MazeCell currentCell;
+	public MazeCell currentCell;
 
     public GameObject camMain;
     public GameObject camMap;
     public GameObject representation;
-    private RaycastHit hit;
 
     private MazeDirection currentDirection;
 
@@ -16,6 +15,7 @@ public class Player : MonoBehaviour {
         transform.localRotation = direction.ToRotation();
         currentDirection = direction;
     }
+
 
     public void SetLocation (MazeCell cell) {
         if (currentCell != null){
@@ -60,19 +60,7 @@ public class Player : MonoBehaviour {
             }
         }
 
-        Vector3 fwd = transform.TransformDirection(Vector3.forward);
-        if (Input.GetMouseButtonDown(0)) //if the left mouse button is pressed do ....
-        {
-
-            if (Physics.Raycast(transform.position, fwd, 10)) //if a game object is in front of player but within 10 units of it trigger a hit
-            {
-                Debug.Log(hit.transform.name);
-                if(hit.transform.tag == "Porta")
-                    hit.transform.gameObject.GetComponent<MazeDoor>().OnPlayerEntered();
-            }
-        }
-
-        /*
+        
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)){
             Move(currentDirection);
         }else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)){
@@ -86,6 +74,6 @@ public class Player : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.E)){
             Rotate(currentDirection.GetNextClockwise());
-        }*/
+        }
     }
 }

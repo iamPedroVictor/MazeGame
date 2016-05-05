@@ -114,8 +114,7 @@ public class Maze : MonoBehaviour {
                 activeCells.Add(neighbor);
             } else if (currentCell.room.settingsIndex == neighbor.room.settingsIndex){
                 CreatePassageInSameRoom(currentCell, neighbor, direction);
-                if (Random.Range(0, 100) > 50 && boxLimit > 0 && 
-                    neighbor.room.settings.Minimo > neighbor.room.boxDisponiveis) {
+                if (boxLimit > 0 && neighbor.room.settings.Minimo > neighbor.room.boxDisponiveis) {
                     GameObject actualBox = Instantiate(boxs[Random.Range(0, boxs.Length)]);
                     actualBox.transform.position = currentCell.transform.position;
                     boxLimit--;
