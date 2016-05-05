@@ -4,7 +4,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 	public Maze mazePrefab;
 
-	private Maze mazeInstance;
+    private Maze mazeInstance;
 
 	public Player playerPrefab;
 
@@ -13,28 +13,49 @@ public class GameManager : MonoBehaviour {
     private GameObject pRepresentation;
 
     public GameObject[] tesourosArray;
+    private bool okPl = true;
 
-	private void Start () {
+    private void Start () {
 		StartCoroutine(BeginGame());
 	}
 
 	private IEnumerator BeginGame () {
 		mazeInstance = Instantiate(mazePrefab) as Maze;
 		yield return StartCoroutine(mazeInstance.Generate());
-        Debug.Log(tesourosArray.Length);
-        for (int i = 0; i < tesourosArray.Length; i++)
-        {
-            GameObject tesouroInstance = Instantiate(tesourosArray[i]) as GameObject;
-            //IntVector2 positionCell = ;
-            tesouroInstance.GetComponent<Tesouro>().SetLocation(mazeInstance.GetCell(mazeInstance.RandomCoordinates));
-
+               
+        while (okPl) {
+            okPlayer(mazeInstance.RandomCoordinates);
         }
-        playerInstance = Instantiate(playerPrefab) as Player;
-		playerInstance.SetLocation(mazeInstance.GetCell(mazeInstance.RandomCoordinates));
+        Debug.Log("Player ok");
+        roomWith1Cell();
         pRepresentation = Instantiate(playerInstance.representation) as GameObject;
         pRepresentation.transform.position = new Vector3(playerInstance.transform.position.x, playerInstance.transform.position.z + 10, playerInstance.transform.position.z);
 
 	}
+
+    private void roomWith1Cell() {
+        for (int i = 0; i < mazeInstance.rooms.Count; i++) {
+            if (mazeInstance.rooms[i].cells.Count < 2){
+                Debug.Log("Quarto de 1 celula");
+            }else if (mazeInstance.rooms[i].cells.Count == 2){
+                Debug.Log("Quarto de 2 celula");
+            }else {
+                Debug.Log("Quarto com: " + mazeInstance.rooms[i].cells.Count);
+            }
+        }
+    }
+
+    private void okPlayer(IntVector2 intV2) {
+        if (mazeInstance.GetCell(intV2).room.cells.Count > 6)
+        {
+            playerInstance = Instantiate(playerPrefab) as Player;
+            playerInstance.SetLocation(mazeInstance.GetCell(intV2));
+            okPl = false;
+        }else {
+            Debug.Log("Player não ok");
+            return;
+        }
+    }
 
 	private void RestartGame () {
 		StopAllCoroutines();

@@ -14,6 +14,9 @@ public class Maze : MonoBehaviour {
 
 	public MazeDoor doorPrefab;
 
+    public int boxLimit;
+    public GameObject[] boxs;
+
 	public MazeRoomSettings[] roomSettings;
 
 	[Range(0f, 1f)]
@@ -32,7 +35,7 @@ public class Maze : MonoBehaviour {
 
 	public IntVector2 size;
 
-	private List<MazeRoom> rooms = new List<MazeRoom>();
+	public List<MazeRoom> rooms = new List<MazeRoom>();
 
 	private MazeRoom CreateRoom (int indexToExclude) {
 		MazeRoom newRoom = ScriptableObject.CreateInstance<MazeRoom>();
@@ -105,19 +108,26 @@ public class Maze : MonoBehaviour {
 		IntVector2 coordinates = currentCell.coordinates + direction.ToIntVector2();
 		if (ContainsCoordinates(coordinates)) {
 			MazeCell neighbor = GetCell(coordinates);
-			if (neighbor == null) {
-				neighbor = CreateCell(coordinates);
-				CreatePassage(currentCell, neighbor, direction);
-				activeCells.Add(neighbor);
-			}else if (currentCell.room.settingsIndex == neighbor.room.settingsIndex) {
-				CreatePassageInSameRoom(currentCell, neighbor, direction);
-			}
-			else {
-				CreateWall(currentCell, neighbor, direction);
-				// No longer remove the cell here.
-			}
-		}
-		else {
+            if (neighbor == null){
+                neighbor = CreateCell(coordinates);
+                CreatePassage(currentCell, neighbor, direction);
+                activeCells.Add(neighbor);
+            } else if (currentCell.room.settingsIndex == neighbor.room.settingsIndex){
+                CreatePassageInSameRoom(currentCell, neighbor, direction);
+                if (Random.Range(0, 100) > 50 && boxLimit > 0 && 
+                    neighbor.room.settings.Minimo > neighbor.room.boxDisponiveis) {
+                    GameObject actualBox = Instantiate(boxs[Random.Range(0, boxs.Length)]);
+                    actualBox.transform.position = currentCell.transform.position;
+                    boxLimit--;
+                    neighbor.room.boxDisponiveis++;
+                    Debug.Log("Criou a caixa, faltam: " + boxLimit);
+                }
+            } else{
+                CreateWall(currentCell, neighbor, direction);
+                // No longer remove the cell here.
+            }
+
+		}else{
 			CreateWall(currentCell, null, direction);
 			// No longer remove the cell here.
 		}

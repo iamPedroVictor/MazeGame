@@ -11,6 +11,8 @@ public class MazeCell : MonoBehaviour {
 		return edges[(int)direction];
 	}
 
+
+
     public void Show()
     {
         gameObject.SetActive(true);

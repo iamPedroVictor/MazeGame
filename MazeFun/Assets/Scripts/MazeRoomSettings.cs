@@ -7,5 +7,6 @@ public class MazeRoomSettings {
 	public Material floorMaterial, wallMaterial;
     public bool visto;
     public string nameRoom;
+    public int Minimo;
 
 }
