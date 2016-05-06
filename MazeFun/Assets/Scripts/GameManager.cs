@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Fungus;
 
 public class GameManager : MonoBehaviour {
-	public Maze mazePrefab;
+    public static GameManager instance = null;
 
-    private Maze mazeInstance;
+    public Maze mazePrefab;
+
+    public Maze mazeInstance;
 
 	public Player playerPrefab;
 
@@ -15,9 +18,20 @@ public class GameManager : MonoBehaviour {
     public GameObject[] tesourosArray;
     private bool okPl = true;
 
+    public Flowchart flowChart;
+
+    public GameObject imageCanvas;
+
     private void Start () {
 		StartCoroutine(BeginGame());
 	}
+
+    void Awake() {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
 
 	private IEnumerator BeginGame () {
 		mazeInstance = Instantiate(mazePrefab) as Maze;
@@ -30,6 +44,9 @@ public class GameManager : MonoBehaviour {
         roomWith1Cell();
         pRepresentation = Instantiate(playerInstance.representation) as GameObject;
         pRepresentation.transform.position = new Vector3(playerInstance.transform.position.x, playerInstance.transform.position.z + 10, playerInstance.transform.position.z);
+        flowChart.SetBooleanVariable("StartGame", true);
+        imageCanvas.SetActive(false);
+        flowChart.SendFungusMessage("PlayerOK");
 
 	}
 
@@ -65,4 +82,10 @@ public class GameManager : MonoBehaviour {
 		}
 		StartCoroutine(BeginGame());
 	}
+
+    public void NotaAdd() {
+        flowChart.SetIntegerVariable("Notas", flowChart.GetIntegerVariable("Notas")+1);
+        flowChart.SendFungusMessage("NotaAdicionada");
+    }
+
 }

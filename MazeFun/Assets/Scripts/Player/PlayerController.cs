@@ -14,8 +14,13 @@ public class PlayerController : MonoBehaviour {
         motor = GetComponent<PlayerMotor>();
     }
 
+
+
     void Update()
     {
+        //Calculate camera rotation as a 3D vector(turning Around)
+        float _yRot = Input.GetAxisRaw("Mouse X");
+        Vector3 _rotation = new Vector3(0f, _yRot, 0f) * lookSensitivity;
 
         //Calculate camera rotation as a 3D vector(turning Around)
         float _xRot = Input.GetAxisRaw("Mouse Y");

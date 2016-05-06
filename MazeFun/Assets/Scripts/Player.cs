@@ -22,7 +22,7 @@ public class Player : MonoBehaviour {
             currentCell.OnPlayerExited();
         }
         currentCell = cell;
-		transform.localPosition = new Vector3(cell.transform.localPosition.x - 0.5f, cell.transform.localPosition.y + 1f, cell.transform.localPosition.z - 0.5f);
+		transform.localPosition = new Vector3(cell.transform.localPosition.x - 0.5f, cell.transform.localPosition.y + 0.5f, cell.transform.localPosition.z - 0.5f);
         currentCell.OnPlayerEntered();
       //  camMap = GameObject.Find("CameraMap");
       //  camMap.SetActive(false);
@@ -76,4 +76,13 @@ public class Player : MonoBehaviour {
             Rotate(currentDirection.GetNextClockwise());
         }
     }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Nota") {
+            GameManager.instance.NotaAdd();
+            other.gameObject.SetActive(false);
+        }
+    }
+
 }
