@@ -25,7 +25,7 @@ public class CameraMap : MonoBehaviour {
         spriteArray[0] = GameObject.FindGameObjectWithTag("PlayerR");
     }
 
-    public void DontViewMap() {
+    public void DontViewMap(IntVector2 playerPosition) {
         for (int i = 0; i < spriteArray.Length; i++)
         {
             if(spriteArray[i]!=null)
@@ -34,6 +34,8 @@ public class CameraMap : MonoBehaviour {
         for (int y = 0; y < quartosVistos.Count - 1; y++){
             quartosVistos[y].Hide();
         }
+        objectsArray[0].gameObject.GetComponent<Player>().SetLocation(GameManager.instance.mazeInstance.GetCell(playerPosition));
+
     }
 
     public void ViewMap() {

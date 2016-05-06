@@ -98,7 +98,7 @@ public class Maze : MonoBehaviour {
 
 
 	private void DoNextGenerationStep (List<MazeCell> activeCells) {
-		int currentIndex = Random.Range(0, activeCells.Count-1);
+		int currentIndex = activeCells.Count-1;
 		MazeCell currentCell = activeCells[currentIndex];
 		if (currentCell.IsFullyInitialized) {
 			activeCells.RemoveAt(currentIndex);

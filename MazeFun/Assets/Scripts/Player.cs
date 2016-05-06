@@ -56,7 +56,7 @@ public class Player : MonoBehaviour {
             if (camMap.activeInHierarchy){
                 camMap.GetComponent<CameraMap>().ViewMap();
             }else {
-                camMap.GetComponent<CameraMap>().DontViewMap();
+                camMap.GetComponent<CameraMap>().DontViewMap(currentCell.coordinates);
             }
         }
 
